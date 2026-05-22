@@ -1,0 +1,190 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../tema/app_colors.dart';
+import '../widgets/aura_app_bar.dart';
+
+class TelaVLibras extends StatelessWidget {
+  const TelaVLibras({super.key});
+
+  static const String urlVLibras =
+      'https://SEU_USUARIO.github.io/aura-vlibras/';
+
+  Future<void> abrirVLibras(BuildContext context) async {
+    final uri = Uri.parse(urlVLibras);
+
+    try {
+      final abriu = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!abriu && context.mounted) {
+        mostrarErro(context);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        mostrarErro(context);
+      }
+    }
+  }
+
+  void mostrarErro(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Não foi possível abrir a página do VLibras.'),
+        backgroundColor: AppColors.red,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(22, 18, 22, 24),
+          child: Column(
+            children: [
+              const AuraAppBar(
+                titulo: 'VLibras',
+                mostrarVoltar: true,
+              ),
+
+              const SizedBox(height: 26),
+
+              Container(
+                width: 108,
+                height: 108,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.purple.withOpacity(0.18),
+                  border: Border.all(
+                    color: AppColors.purple,
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.purple.withOpacity(0.25),
+                      blurRadius: 35,
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.sign_language_rounded,
+                  color: AppColors.purple,
+                  size: 58,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              const Text(
+                'Assistente VLibras',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              const Text(
+                'O VLibras oficial funciona melhor em uma página web. '
+                'Por isso, o AURA abre uma página própria com o widget oficial do VLibras.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppColors.gray,
+                  fontSize: 15,
+                  height: 1.5,
+                ),
+              ),
+
+              const SizedBox(height: 26),
+
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: AppColors.card,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: const Column(
+                  children: [
+                    Icon(
+                      Icons.language_rounded,
+                      color: AppColors.purple,
+                      size: 34,
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'Como vai funcionar?',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Ao abrir a página, toque no botão azul do VLibras. A página contém explicações sobre o AURA para tradução em Libras.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: AppColors.gray,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 28),
+
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton.icon(
+                  onPressed: () => abrirVLibras(context),
+                  icon: const Icon(
+                    Icons.open_in_browser_rounded,
+                    color: AppColors.white,
+                  ),
+                  label: const Text(
+                    'Abrir página VLibras',
+                    style: TextStyle(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.purple,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 14),
+
+              Text(
+                urlVLibras,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.gray,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
